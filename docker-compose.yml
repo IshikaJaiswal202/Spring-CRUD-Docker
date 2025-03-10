@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: 6267496475
+      MYSQL_DATABASE: userDockerDb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  spring-boot-app:
+    build: .
+    container_name: spring-boot-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    # Remove these lines so Spring Boot picks from application.properties
+    # environment:
+    #   SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/employeedb
+    #   SPRING_DATASOURCE_USERNAME: root
+    #   SPRING_DATASOURCE_PASSWORD: 6267496475
+
+volumes:
+  mysql-data:
